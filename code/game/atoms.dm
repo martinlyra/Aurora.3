@@ -34,6 +34,9 @@
 
 	var/gfi_layer_rotation = GFI_ROTATION_DEFAULT
 
+/atom/proc/on_pointed(mob/pointee)
+	return
+
 /atom/proc/reveal_blood()
 	return
 
@@ -595,7 +598,7 @@
 			if(!(H in mobs))
 				if(src.z == H.z && get_dist(src, H) <= range)
 					H.intent_listen(src, message)
-	
+
 /atom/proc/change_area(var/area/oldarea, var/area/newarea)
 	change_area_name(oldarea.name, newarea.name)
 

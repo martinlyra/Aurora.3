@@ -389,6 +389,9 @@
 
 	user.apply_damage(150, IRRADIATE, damage_flags = DAM_DISPERSED)
 
+/obj/machinery/power/supermatter/on_pointed(mob/pointee)
+	src.add_filter("pointglow", 1, list(type = "outline", size = 1, color = "#F00", flags = OUTLINE_SHARP))
+	addtimer(CALLBACK(src, /atom/movable.proc/remove_filter, "pointglow"), 2 SECONDS)
 
 /obj/machinery/power/supermatter/CollidedWith(atom/AM as mob|obj)
 	if(!AM.simulated)

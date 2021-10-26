@@ -540,3 +540,8 @@ var/const/enterloopsanity = 100
 		return 15
 	else
 		return 0
+
+/turf/on_pointed(mob/pointee)
+	var/obj/effect/decal/point/PE = new(src)
+	PE.invisibility = pointee.invisibility
+	addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, PE), 2 SECONDS)

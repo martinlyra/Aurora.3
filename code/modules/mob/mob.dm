@@ -327,27 +327,32 @@
 	face_atom(A)
 	A.examine(src)
 
-/mob/var/obj/effect/decal/point/pointing_effect = null//Spam control, can only point when the previous pointer qdels
-
+//Spam control, can only point when the cooldown has elapsed
+/mob/var/next_point_time = 0
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
 	set category = "Object"
 
 	if(!src || !isturf(src.loc) || !(A in range(world.view, get_turf(src))))
-		return 0
-	if(istype(A, /obj/effect/decal/point) || pointing_effect)
-		return 0
+		return FALSE
+	if(istype(A, /obj/effect/decal/point))
+		return FALSE
 
 	var/tile = get_turf(A)
-	if (!tile)
-		return 0
+	if(!tile)
+		return FALSE
 
-	pointing_effect = new /obj/effect/decal/point(tile)
-	pointing_effect.invisibility = invisibility
-	addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, pointing_effect), 2 SECONDS)
+	if(next_point_time >= world.time)
+		return FALSE
 
+	next_point_time = world.time + 25
 	face_atom(A)
-	return 1
+
+	var/obj/effect/decal/point/PE = new(tile)
+	PE.invisibility = invisibility
+	addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, PE), 2 SECONDS)
+	return TRUE
+
 /datum/mobl	// I have no idea what the fuck this is, but it's better for it to be a datum than an /obj/effect.
 	var/list/container = list()
 	var/master

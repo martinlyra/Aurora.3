@@ -232,7 +232,7 @@
 
 	if(anchored)
 		return
-	
+
 	if(!universe.OnTouchMapEdge(src))
 		return
 
@@ -432,3 +432,7 @@
 
 /atom/movable/proc/can_attach_sticker(var/mob/user, var/obj/item/sticker/S)
 	return TRUE
+
+/atom/movable/on_pointed(mob/pointee)
+	src.add_filter("pointglow", 1, list(type = "drop_shadow", x = 0, y = -1, offset = 1, size = 1, color = "#F00"))
+	addtimer(CALLBACK(src, /atom/movable.proc/remove_filter, "pointglow"), 2 SECONDS)
